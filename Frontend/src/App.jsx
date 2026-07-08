@@ -5,14 +5,16 @@ import LoginPage from "./Pages/LoginPage";
 import HomePage from "./Pages/HomePage";
 import PageNotFound from "./Pages/PageNotFoundPage";
 import { Toaster } from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import useCurrentUser from "./customHooks/GetCurrentUser";
 import Profile from "./Pages/Profile";
 import useGetOtherUsers from "./customHooks/GetOtherUsers";
 import useGetMessages from "./customHooks/GetMessages";
 import { useEffect } from "react";
-import io from "socket.io-client";
+import socket from "./socket/socket";
+import { useReducer } from "react";
+import { setOnlineUsers } from "./redux/usersSlice";
 
 const App = () => {
   useCurrentUser();
@@ -29,15 +31,27 @@ const App = () => {
   }, [theme]);
 
   const { userData } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const socket = io("http://localhost:4000", {
-      query: {
+    
+    if (userData) {
+      socket.io.opts.query = {
         userId: userData?._id,
-      },
-    });
-  }, []);
+      };
 
+         socket.connect(); 
+
+      socket.on("onlineUsers", (allOnlineUsers) => {
+        console.log(allOnlineUsers);
+        dispatch(setOnlineUsers(allOnlineUsers));
+      });
+    }
+    return () => {
+      socket.off("onlineUsers");
+      socket.disconnect();
+    };
+  }, [userData,dispatch]);
   const routes = createBrowserRouter([
     {
       path: "/",

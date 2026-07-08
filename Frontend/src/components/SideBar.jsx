@@ -3,9 +3,15 @@ import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../redux/usersSlice";
+import { useState } from "react";
 const SideBar = () => {
-  const { userData, otherUsersData, selectedUser } = useSelector(
+  const { userData, otherUsersData, selectedUser, onlineUsers } = useSelector(
     (state) => state.user,
+  );
+  const [searchChats, setSearchChats] = useState("");
+
+  const filteredChats = otherUsersData.filter((otherUser) =>
+    otherUser.name.toLowerCase().includes(searchChats.toLowerCase()),
   );
 
   const dispatch = useDispatch();
@@ -45,6 +51,8 @@ const SideBar = () => {
 
         <input
           type="search"
+          value={searchChats}
+          onChange={(e) => setSearchChats(e.target.value)}
           placeholder="Search..."
           className="py-2 px-3 rounded-full outline-none flex-1 bg-transparent text-sm md:text-base dark:text-[#F8FAFC]"
         />
@@ -52,7 +60,8 @@ const SideBar = () => {
 
       {/* Chats section */}
       <div className="flex-1 flex flex-col gap-3 overflow-y-auto pr-1">
-        {otherUsersData?.map((otherUser) => {
+        {filteredChats?.map((otherUser) => {
+          const isOnline = onlineUsers.includes(otherUser._id);
           return (
             <div
               key={otherUser._id}
@@ -75,7 +84,7 @@ const SideBar = () => {
                 </h1>
 
                 <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
-                  Online
+                  {isOnline ? "Online" : "Offline"}
                 </p>
               </div>
             </div>

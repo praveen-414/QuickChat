@@ -12,7 +12,7 @@ const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     if (password !== confirmPassword) {
@@ -32,20 +32,19 @@ const SignUpPage = () => {
           withCredentials: true,
         },
       );
-      console.log(res.data);
-      
+
       dispatch(setUsersData(res.data.user));
-      navigate("/")
+      navigate("/");
       toast.success("Registered successfully...!");
       setName("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
     } catch (error) {
-        console.log(error);
-  console.log(error.message);
-  console.log(error.code);
-  console.log(error.response);
+      console.log(error);
+      console.log(error.message);
+      console.log(error.code);
+      console.log(error.response);
     }
   };
   return (

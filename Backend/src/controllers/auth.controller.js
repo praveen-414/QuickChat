@@ -77,7 +77,6 @@ const login = async (req, res) => {
         expiresIn: "7d",
       },
     );
-    console.log("Login user:", user._id);
     res.cookie("token", token, {
       httpOnly: true,
       secure: false,
@@ -105,7 +104,10 @@ const logOut = async (req, res) => {
     return res.status(200).json({
       message: "User logged out successfully...",
     });
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    
+  }
 };
 
 export default { signUp, login,logOut };

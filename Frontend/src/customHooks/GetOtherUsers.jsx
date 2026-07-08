@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setOtherUSersData } from "../redux/usersSlice";
+import { setOtherUsersData } from "../redux/usersSlice";
 import axios from "axios";
 
 const useGetOtherUsers = () => {
@@ -14,7 +14,7 @@ const useGetOtherUsers = () => {
         const res = await axios.get("http://localhost:4000/api/user/others", {
           withCredentials: true,
         });
-        dispatch(setOtherUSersData(res.data.otherUsers));
+        dispatch(setOtherUsersData(res.data.otherUsers));
       } catch (error) {
         console.log(error);
       }

@@ -6,7 +6,7 @@ import axios from "axios";
 const useCurrentUser = () => {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.user);
-  console.log("Redux user:", userData);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {

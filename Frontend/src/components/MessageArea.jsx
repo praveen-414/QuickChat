@@ -9,11 +9,14 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { setSelectedUser } from "../redux/usersSlice";
 import { useRef } from "react";
+import socket from "../socket/socket";
 
 const MessageArea = () => {
   const [inputMessage, setInputMessage] = useState("");
 
-  const { selectedUser, userData } = useSelector((state) => state.user);
+  const { selectedUser, userData,onlineUsers } = useSelector((state) => state.user);
+const isOnline = onlineUsers.includes(selectedUser?._id);
+
 
   const { messages } = useSelector((state) => state.message);
   const scrollRef = useRef(null);
@@ -40,7 +43,7 @@ const MessageArea = () => {
           withCredentials: true,
         },
       );
-      console.log("POST response:", res.data);
+     
       dispatch(setMessages([...messages, res.data]));
       setInputMessage("");
     } catch (error) {
@@ -48,9 +51,20 @@ const MessageArea = () => {
     }
   };
 
+  useEffect(() => {
+  const handleNewMessage = (message) => {
+    dispatch(setMessages([...messages, message]));
+  };
+
+  socket.on("newMessage", handleNewMessage);
+
+  return () => {
+    socket.off("newMessage", handleNewMessage);
+  };
+}, [dispatch, messages]);
+
   return (
     <div
-      c
       className={`${
         selectedUser ? "flex" : "hidden md:flex"
       } md:w-[70%] w-full h-screen bg-[#F8FAFC] dark:bg-[#0F172A] flex-col overflow-hidden`}
@@ -80,7 +94,7 @@ const MessageArea = () => {
               </h1>
 
               <p className="text-xs text-[#64748B] dark:text-[#94A3B8]">
-                Online
+                 {isOnline ? "Online" : "Offline"}
               </p>
             </div>
           </div>
@@ -99,12 +113,7 @@ const MessageArea = () => {
                 );
                 const isSender =
                   message.sender.toString() === userData._id.toString();
-                console.log({
-                  text: message.messages,
-                  sender: message.sender,
-                  user: userData._id,
-                  isSender,
-                });
+              
 
                 return isSender ? (
                   <SenderMessage
