@@ -37,7 +37,12 @@ const signUp = async (req, res) => {
       },
       process.env.JWT_SECRET_KEY,
     );
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.status(201).json({
       message: "User registered successfully...!",
       user,
@@ -79,8 +84,8 @@ const login = async (req, res) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "None",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
@@ -96,7 +101,7 @@ const login = async (req, res) => {
 const logOut = async (req, res) => {
   try {
     const token = req.cookies.token;
-     res.clearCookie("token", {
+    res.clearCookie("token", {
       httpOnly: true,
       secure: false,
       sameSite: "lax",
@@ -106,8 +111,7 @@ const logOut = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    
   }
 };
 
-export default { signUp, login,logOut };
+export default { signUp, login, logOut };
