@@ -1,5 +1,5 @@
 import React from "react";
-import signUpImg from "../assets/signup.png";
+import signUpImg from "../assets/signUp.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
