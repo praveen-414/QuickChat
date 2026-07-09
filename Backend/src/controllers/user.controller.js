@@ -51,8 +51,6 @@ const updateProfile = async (req, res) => {
           fileName: Date.now() + "-" + req.file.originalname,
         });
 
-        console.log(uploadedImage);
-
         profile = uploadedImage.url;
       } catch (error) {
         console.log(error);
@@ -67,8 +65,6 @@ const updateProfile = async (req, res) => {
       },
       { new: true },
     );
-
-    console.log("Updated User:", updatedUser);
 
     return res.status(200).json({
       message: "Updated",
