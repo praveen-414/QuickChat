@@ -37,7 +37,7 @@ const MessageArea = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:4000/api/message/send/${selectedUser._id}`,
+        `https://quickchat-backend-zxkb.onrender.com/api/message/send/${selectedUser._id}`,
         {
           messages: inputMessage,
         },

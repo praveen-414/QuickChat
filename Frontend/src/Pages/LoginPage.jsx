@@ -19,7 +19,7 @@ const LoginPage = () => {
     }
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        "https://quickchat-backend-zxkb.onrender.com/api/auth/login",
         {
           email,
           password,

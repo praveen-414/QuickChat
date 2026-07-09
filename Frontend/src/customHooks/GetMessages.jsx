@@ -18,7 +18,7 @@ const useGetMessages = () => {
       if (!selectedUser?._id) return;
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/message/get/${selectedUser._id}`, 
+          `https://quickchat-backend-zxkb.onrender.com/api/message/get/${selectedUser._id}`, 
           {
             withCredentials: true,
           },

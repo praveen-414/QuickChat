@@ -37,7 +37,7 @@ const updateProfile = async () => {
     }
 
     const res = await axios.put(
-      "http://localhost:4000/api/user/profile",
+      "https://quickchat-backend-zxkb.onrender.com/api/user/profile",
       formData,
       {
         withCredentials: true,
@@ -59,7 +59,7 @@ const updateProfile = async () => {
 };
   const handleLogout = async (req, res) => {
     try {
-      const res = await axios.get("http://localhost:4000/api/auth/logout", {
+      const res = await axios.get("https://quickchat-backend-zxkb.onrender.com/api/auth/logout", {
         withCredentials: true,
       });
       dispatch(logOut());
