@@ -12,7 +12,7 @@ import Profile from "./Pages/Profile";
 import useGetOtherUsers from "./customHooks/GetOtherUsers";
 import useGetMessages from "./customHooks/GetMessages";
 import { useEffect } from "react";
-import socket from "./socket/socket";
+import socket from "./socket-frontend/socket";
 import { useReducer } from "react";
 import { setOnlineUsers } from "./redux/usersSlice";
 

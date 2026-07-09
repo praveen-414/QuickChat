@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { server } from "./src/socket/socket.js";
+import { server } from "./src/socket-backend/socket.js";
 dotenv.config();
 
 const port = process.env.PORT || 5000;

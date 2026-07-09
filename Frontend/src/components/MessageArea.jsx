@@ -9,7 +9,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { setSelectedUser } from "../redux/usersSlice";
 import { useRef } from "react";
-import socket from "../socket/socket";
+import socket from "../socket-frontend/socket";
 import { incrementUnread } from "../redux/usersSlice";
 
 const MessageArea = () => {
