@@ -7,6 +7,7 @@ const usersSlice = createSlice({
     otherUsersData: [],
     selectedUser: null,
     onlineUsers: [],
+    unreadMessages: {},
   },
   reducers: {
     setUsersData: (state, action) => {
@@ -15,9 +16,13 @@ const usersSlice = createSlice({
     setOtherUsersData: (state, action) => {
       state.otherUsersData = action.payload;
     },
-    setSelectedUser: (state, action) => {
-      state.selectedUser = action.payload;
-    },
+   setSelectedUser: (state, action) => {
+  state.selectedUser = action.payload;
+
+  if (action.payload) {
+    delete state.unreadMessages[action.payload._id];
+  }
+},
     logOut: (state) => {
       state.userData = null;
       state.otherUsersData = null;
@@ -26,10 +31,22 @@ const usersSlice = createSlice({
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
     },
+   incrementUnread: (state, action) => {
+  const senderId = action.payload;
+
+  state.unreadMessages[senderId] =
+    (state.unreadMessages[senderId] || 0) + 1;
+},
   },
 });
 
-export const { setUsersData, setOtherUsersData, setSelectedUser, logOut, setOnlineUsers } =
-  usersSlice.actions;
+export const {
+  setUsersData,
+  setOtherUsersData,
+  setSelectedUser,
+  logOut,
+  setOnlineUsers,
+  incrementUnread
+} = usersSlice.actions;
 
 export default usersSlice.reducer;

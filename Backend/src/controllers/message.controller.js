@@ -27,8 +27,8 @@ const sendMessage = async (req, res) => {
     }
 
     const receiverSocketId = getReceiverId(receiver);
-    if(receiverSocketId){
-      io.to(receiverSocketId).emit("newMessage", newMessage)
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
     }
 
     res.status(201).json(newMessage);

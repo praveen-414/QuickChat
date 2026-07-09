@@ -1,4 +1,5 @@
 import userModel from "../models/user.model.js";
+import imagekit from "../config/imagekit.js";
 
 const getCurrentUser = async (req, res) => {
   try {
@@ -30,33 +31,52 @@ const getOtherUsers = async (req, res) => {
     console.log(error);
   }
 };
+
 const updateProfile = async (req, res) => {
   try {
-    const userId = req.userId;
-    const { name } = req.body;
-    if (!name?.trim()) {
-      return res.status(400).json({
-        message: "Name is required",
-      });
+    console.log("Route hit");
+
+    console.log("User ID:", req.userId);
+    console.log("Body:", req.body);
+    console.log("File:", !!req.file);
+
+    let profile = "";
+
+    if (req.file) {
+      console.log("Uploading...");
+
+      try {
+        const uploadedImage = await imagekit.files.upload({
+          file: req.file.buffer.toString("base64"),
+          fileName: Date.now() + "-" + req.file.originalname,
+        });
+
+        console.log(uploadedImage);
+
+        profile = uploadedImage.url;
+      } catch (error) {
+        console.log(error);
+      }
     }
-    const updatedUser = await userModel
-      .findByIdAndUpdate(
-        userId,
-        {
-          name: name.trim(),
-        },
-        { new: true },
-      )
-      .select("-password");
-    res.status(200).json({
-      message: "Profile updated successfully",
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      req.userId,
+      {
+        name: req.body.name,
+        profile,
+      },
+      { new: true },
+    );
+
+    console.log("Updated User:", updatedUser);
+
+    return res.status(200).json({
+      message: "Updated",
       user: updatedUser,
     });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Internal server error",
-    });
+  } catch (err) {
+    console.error("ERROR:", err);
+    return res.status(500).json({ message: err.message });
   }
 };
 export default { getCurrentUser, getOtherUsers, updateProfile };

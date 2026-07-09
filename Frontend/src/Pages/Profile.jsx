@@ -12,6 +12,8 @@ import { setTheme } from "../redux/themeSlice";
 import { logOut } from "../redux/usersSlice";
 
 const Profile = () => {
+  const [profile, setProfile] = useState(null);
+  const [profilePreview, setProfilePreview] = useState("");
   const { userData } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const [isReadOnly, setIsReadOnly] = useState(true);
@@ -24,32 +26,44 @@ const Profile = () => {
       setUpdateName(userData.name);
     }
   }, [userData]);
-  const updateProfile = async () => {
-    try {
-      const res = await axios.post(
-        "http://localhost:4000/api/user/profile",
-        {
-          name: updateName,
-        },
-        { withCredentials: true },
-      );
+const updateProfile = async () => {
+  try {
+    const formData = new FormData();
 
-      dispatch(setUsersData(res.data));
-      setIsReadOnly(true);
-      toast.success("Profile Updated Successfully...");
-      navigate("/");
-    } catch (error) {
-      console.log(error);
+    formData.append("name", updateName);
+
+    if (profile) {
+      formData.append("profile", profile);
     }
-  };
 
+    const res = await axios.put(
+      "http://localhost:4000/api/user/profile",
+      formData,
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    dispatch(setUsersData(res.data.user));
+
+    toast.success(res.data.message);
+
+    navigate("/");
+  } catch (error) {
+    console.log(error);
+    toast.error("Profile update failed");
+  }
+};
   const handleLogout = async (req, res) => {
     try {
       const res = await axios.get("http://localhost:4000/api/auth/logout", {
         withCredentials: true,
       });
-       dispatch(logOut()); 
-    navigate("/login");
+      dispatch(logOut());
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }
@@ -76,11 +90,28 @@ const Profile = () => {
           </div>
 
           <div className="flex flex-col w-full h-full items-center gap-5">
-            <div className="w-[140px] h-[140px] md:w-[180px] md:h-[180px] lg:w-[180px] lg:h-[180px] rounded-full shadow-md shadow-gray-400 dark:shadow-[#1E293B]">
+            <div className="relative w-[180px] h-[180px] rounded-full overflow-hidden shadow-md shadow-gray-400 dark:shadow-[#1E293B]">
               <img
-                src="https://imgs.search.brave.com/bswKFgcinA7m0xERaYId7KQtMcLY4hXPF6jNm4gwTRU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pMS53/cC5jb20vd3d3LnNo/dXR0ZXJzdG9jay5j/b20vYmxvZy93cC1j/b250ZW50L3VwbG9h/ZHMvc2l0ZXMvNS8y/MDI0LzA2L3Byb2Zp/bGVfcGhvdG9fc2Ft/cGxlXzEyLmpwZz9z/c2w9MQ"
-                alt=""
-                className="rounded-full cursor-pointer"
+                src={
+                  profilePreview ||
+                  userData?.profile ||
+                  "https://placehold.co/200x200?text=User"
+                }
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+
+              <input
+                type="file"
+                accept="image/*"
+                className="absolute inset-0 opacity-0 cursor-pointer"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+
+                  setProfile(file);
+                  setProfilePreview(URL.createObjectURL(file));
+                }}
               />
             </div>
             <form

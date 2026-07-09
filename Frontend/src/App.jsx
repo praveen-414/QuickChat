@@ -34,13 +34,12 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    
     if (userData) {
       socket.io.opts.query = {
         userId: userData?._id,
       };
 
-         socket.connect(); 
+      socket.connect();
 
       socket.on("onlineUsers", (allOnlineUsers) => {
         console.log(allOnlineUsers);
@@ -51,7 +50,10 @@ const App = () => {
       socket.off("onlineUsers");
       socket.disconnect();
     };
-  }, [userData,dispatch]);
+  }, [userData, dispatch]);
+
+
+  
   const routes = createBrowserRouter([
     {
       path: "/",

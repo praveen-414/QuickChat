@@ -3,11 +3,16 @@ import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../redux/usersSlice";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const SideBar = () => {
-  const { userData, otherUsersData, selectedUser, onlineUsers } = useSelector(
-    (state) => state.user,
-  );
+  const {
+    userData,
+    otherUsersData,
+    selectedUser,
+    onlineUsers,
+    unreadMessages,
+  } = useSelector((state) => state.user);
+console.log(userData);
   const [searchChats, setSearchChats] = useState("");
 
   const filteredChats = otherUsersData.filter((otherUser) =>
@@ -15,6 +20,8 @@ const SideBar = () => {
   );
 
   const dispatch = useDispatch();
+
+  const [messageCount, setMessageCount] = useState(0);
 
   return (
     <div
@@ -37,7 +44,9 @@ const SideBar = () => {
         <Link to="profile">
           <div className="w-[45px] h-[45px] md:w-[50px] md:h-[50px] rounded-full shadow-md shadow-gray-300 dark:shadow-[#1E293B] overflow-hidden shrink-0">
             <img
-              src="https://imgs.search.brave.com/CGEARpFVtU6PvMBCXIl1a9JYJGQK8xOzcLi_lE8mE4M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMjEz/NTkxMTUzNi9waG90/by9wcm9maWxlLXZp/ZXctb2YtYS1yZXRp/cmVkLWFzaWFuLWhp/a2VyLWF0LW11cml3/YWktYmVhY2guanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPXNv/Z1NUUEdLZmUxc3pi/MkVwVXRud2RlMmRB/V09KYXdSOUdMZDd4/R2dYQ0k9"
+              src={
+                userData?.profile || "https://placehold.co/200x200?text=User"
+              }
               alt="profile"
               className="w-full h-full object-cover cursor-pointer"
             />
@@ -71,14 +80,17 @@ const SideBar = () => {
               {/* User image */}
               <div className="w-[50px] h-[50px] rounded-full shadow-md shadow-gray-300 dark:shadow-[#1E293B] overflow-hidden shrink-0">
                 <img
-                  src="https://imgs.search.brave.com/CGEARpFVtU6PvMBCXIl1a9JYJGQK8xOzcLi_lE8mE4M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMjEz/NTkxMTUzNi9waG90/by9wcm9maWxlLXZp/ZXctb2YtYS1yZXRp/cmVkLWFzaWFuLWhp/a2VyLWF0LW11cml3/YWktYmVhY2guanBn/P3M9NjEyeDYxMiZ3/PTAmaz0yMCZjPXNv/Z1NUUEdLZmUxc3pi/MkVwVXRud2RlMmRB/V09KYXdSOUdMZDd4/R2dYQ0k9"
+                  src={
+                    otherUser?.profile ||
+                    "https://placehold.co/200x200?text=User"
+                  }
                   alt="user"
                   className="w-full h-full object-cover"
                 />
               </div>
 
               {/* User info */}
-              <div className="flex flex-col overflow-hidden">
+              <div className="flex flex-col overflow-hidden justify-between w-full">
                 <h1 className="text-[#1E293B] dark:text-[#F8FAFC] text-[1rem] md:text-[1.1rem] font-medium truncate">
                   {otherUser?.name || "User"}
                 </h1>
@@ -87,6 +99,13 @@ const SideBar = () => {
                   {isOnline ? "Online" : "Offline"}
                 </p>
               </div>
+              <span className="w-full flex justify-end">
+                {unreadMessages[otherUser._id] > 0 && (
+                  <div className="bg-[#2563EB] text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">
+                    {unreadMessages[otherUser._id]}
+                  </div>
+                )}
+              </span>
             </div>
           );
         })}
