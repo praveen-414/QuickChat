@@ -11,14 +11,16 @@ const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
+      e.preventDefault();
     if (password !== confirmPassword) {
-      return alert("passwords doesn't match...!");
+      return toast.error("passwords doesn't match...!");
     }
-    e.preventDefault();
+  setLoading(true);
     try {
       const res = await axios.post(
         "https://quickchat-backend-zxkb.onrender.com/api/auth/signup",
@@ -45,6 +47,8 @@ const SignUpPage = () => {
       console.log(error.message);
       console.log(error.code);
       console.log(error.response);
+    }finally{
+      setLoading(false);
     }
   };
   return (
@@ -80,6 +84,7 @@ const SignUpPage = () => {
 
           <form className="flex flex-col gap-4" onSubmit={handleSignUp}>
             <input
+            required
               value={name}
               onChange={(e) => setName(e.target.value)}
               type="text"
@@ -88,6 +93,7 @@ const SignUpPage = () => {
             />
 
             <input
+            required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
@@ -96,6 +102,7 @@ const SignUpPage = () => {
             />
 
             <input
+            required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
@@ -104,6 +111,7 @@ const SignUpPage = () => {
             />
 
             <input
+            required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               type="password"
@@ -121,6 +129,7 @@ const SignUpPage = () => {
             </p>
 
             <button
+             disabled={loading}
               type="submit"
               className="
                 mt-3
@@ -136,7 +145,7 @@ const SignUpPage = () => {
                 cursor-pointer
               "
             >
-              Sign Up
+             {loading ? "Signing Up..." : "Sign Up"}
             </button>
           </form>
         </div>
