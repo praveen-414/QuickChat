@@ -1,6 +1,6 @@
 # 💬 QuickChat
 
-**Live Demo:** https://quickchat-1x85.onrender.com
+**Live Demo:** https://quickchat-qu6a.onrender.com
 
 QuickChat is a real-time chat application built with the MERN Stack and Socket.IO. It enables users to communicate instantly through one-to-one messaging with secure authentication, online user status, and profile management. The application is designed to provide a fast, responsive, and seamless chatting experience.
 
