@@ -12,7 +12,7 @@ const SideBar = () => {
     onlineUsers,
     unreadMessages,
   } = useSelector((state) => state.user);
-console.log(userData);
+
   const [searchChats, setSearchChats] = useState("");
 
   const filteredChats = otherUsersData.filter((otherUser) =>
@@ -27,7 +27,7 @@ console.log(userData);
     <div
       className={`${
         selectedUser ? "hidden md:flex" : "flex"
-      } w-full md:w-[30%] h-screen bg-white dark:bg-[#111827] border-r border-[#E2E8F0] dark:border-[#334155] p-4 flex-col gap-5 overflow-hidden`}
+      } w-full md:w-[30%] h-full bg-white dark:bg-[#111827] border-r border-[#E2E8F0] dark:border-[#334155] p-4 flex-col gap-5 overflow-hidden`}
     >
       {/* Logo */}
       <h1 className="text-[#2563EB] dark:text-[#F8FAFC] text-2xl md:text-3xl font-bold">

@@ -11,7 +11,7 @@ const useGetOtherUsers = () => {
       if (!userData) return;
     const fetchUser = async () => {
       try {
-        const res = await axios.get("https://quickchat-backend-zxkb.onrender.com/api/user/others", {
+        const res = await axios.get("http://localhost:4000/api/user/others", {
           withCredentials: true,
         });
         dispatch(setOtherUsersData(res.data.otherUsers));

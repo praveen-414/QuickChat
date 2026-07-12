@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from "react-redux";
 import SenderMessage from "./SenderMessage";
 import ReceiverMessage from "./ReceiverMessage";
 import axios from "axios";
-import { setMessages } from "../redux/messagesSlice";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { setSelectedUser } from "../redux/usersSlice";
 import { useRef } from "react";
 import socket from "../socket-frontend/socket";
 import { incrementUnread } from "../redux/usersSlice";
+import { setMessages, addMessage } from "../redux/messagesSlice";
 
 const MessageArea = () => {
   const [inputMessage, setInputMessage] = useState("");
@@ -32,47 +32,56 @@ const MessageArea = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return;
+const handleSendMessage = async () => {
+  if (!inputMessage.trim()) return;
 
-    try {
-      const res = await axios.post(
-        `https://quickchat-backend-zxkb.onrender.com/api/message/send/${selectedUser._id}`,
-        {
-          messages: inputMessage,
-        },
-        {
-          withCredentials: true,
-        },
-      );
+  const tempMessage = {
+    _id: Date.now().toString(),
+    sender: userData._id,
+    receiver: selectedUser._id,
+    messages: inputMessage,
+    createdAt: new Date().toISOString(),
+  };
 
-      dispatch(setMessages([...messages, res.data]));
-      setInputMessage("");
-    } catch (error) {
-      console.log(error);
+  // Show instantly
+  dispatch(addMessage(tempMessage));
+
+  const messageText = inputMessage;
+  setInputMessage("");
+
+  try {
+    await axios.post(
+      `http://localhost:4000/api/message/send/${selectedUser._id}`,
+      {
+        messages: messageText,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+useEffect(() => {
+  const handleNewMessage = (message) => {
+    if (selectedUser?._id === message.sender.toString()) {
+      dispatch(addMessage(message));
+    } else {
+      dispatch(incrementUnread(message.sender.toString()));
     }
   };
 
-  useEffect(() => {
-    const handleNewMessage = (message) => {
-      // Message belongs to the currently open chat
-      if (selectedUser?._id === message.sender.toString()) {
-        dispatch(setMessages([...messages, message]));
-      } else {
-        // Message belongs to another chat
-        dispatch(incrementUnread(message.sender.toString()));
-      }
-    };
+  socket.on("newMessage", handleNewMessage);
 
-    socket.on("newMessage", handleNewMessage);
-
-    return () => socket.off("newMessage", handleNewMessage);
-  }, [selectedUser, messages, dispatch]);
+  return () => socket.off("newMessage", handleNewMessage);
+}, [selectedUser, dispatch]);
   return (
     <div
       className={`${
         selectedUser ? "flex" : "hidden md:flex"
-      } md:w-[70%] w-full h-screen bg-[#F8FAFC] dark:bg-[#0F172A] flex-col overflow-hidden`}
+      } md:w-[70%] w-full h-full bg-[#F8FAFC] dark:bg-[#0F172A] flex-col overflow-hidden`}
     >
       {selectedUser ? (
         <>

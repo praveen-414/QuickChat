@@ -42,7 +42,6 @@ const App = () => {
       socket.connect();
 
       socket.on("onlineUsers", (allOnlineUsers) => {
-        console.log(allOnlineUsers);
         dispatch(setOnlineUsers(allOnlineUsers));
       });
     }
@@ -52,8 +51,6 @@ const App = () => {
     };
   }, [userData, dispatch]);
 
-
-  
   const routes = createBrowserRouter([
     {
       path: "/",

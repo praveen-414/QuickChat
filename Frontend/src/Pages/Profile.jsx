@@ -37,7 +37,7 @@ const updateProfile = async () => {
     }
 
     const res = await axios.put(
-      "https://quickchat-backend-zxkb.onrender.com/api/user/profile",
+      "http://localhost:4000/api/user/profile",
       formData,
       {
         withCredentials: true,
@@ -59,7 +59,7 @@ const updateProfile = async () => {
 };
   const handleLogout = async (req, res) => {
     try {
-      const res = await axios.get("https://quickchat-backend-zxkb.onrender.com/api/auth/logout", {
+      const res = await axios.get("http://localhost:4000/api/auth/logout", {
         withCredentials: true,
       });
       dispatch(logOut());
@@ -161,12 +161,12 @@ const updateProfile = async () => {
               onClick={() => dispatch(setTheme())}
               className="flex items-center justify-between w-full shadow-md rounded-lg p-3 cursor-pointer hover:bg-[#DBEAFE] dark:text-[#F8FAFC] dark:hover:bg-[#1E40AF] dark:border dark:border-[#334155]"
             >
-              <h1>{theme === "Dark" ? "Dark Mode" : "Light Mode"}</h1>
+              <h1>{theme === "Light" ? "Dark Mode" : "Light Mode"}</h1>
               <span>
                 {theme === "Light" ? (
-                  <MdOutlineLightMode size={20} color="#FACC15" />
+                  <MdOutlineDarkMode size={20}  color="#7C3AED"/>
                 ) : (
-                  <MdOutlineDarkMode size={20} color="#7C3AED" />
+                  <MdOutlineLightMode size={20} color="#FACC15"  />
                 )}
               </span>
             </div>

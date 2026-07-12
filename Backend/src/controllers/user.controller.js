@@ -34,11 +34,9 @@ const getOtherUsers = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    console.log("Route hit");
+    
 
-    console.log("User ID:", req.userId);
-    console.log("Body:", req.body);
-    console.log("File:", !!req.file);
+ 
 
     let profile = "";
 

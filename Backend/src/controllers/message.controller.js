@@ -4,6 +4,7 @@ import { getReceiverId } from "../socket-backend/socket.js";
 import { io } from "../socket-backend/socket.js";
 
 const sendMessage = async (req, res) => {
+   console.time("sendMessage");
   try {
     const sender = req.userId;
     const receiver = req.params.id;
@@ -32,6 +33,7 @@ const sendMessage = async (req, res) => {
     }
 
     res.status(201).json(newMessage);
+      console.timeEnd("sendMessage");
   } catch (error) {
     console.log(error);
   }
