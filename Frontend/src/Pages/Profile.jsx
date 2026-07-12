@@ -59,7 +59,7 @@ const updateProfile = async () => {
 };
   const handleLogout = async (req, res) => {
     try {
-      const res = await axios.get("http://localhost:4000/api/auth/logout", {
+      const res = await axios.get("https://quickchat-lxda.onrender.com/api/auth/logout", {
         withCredentials: true,
       });
       dispatch(logOut());

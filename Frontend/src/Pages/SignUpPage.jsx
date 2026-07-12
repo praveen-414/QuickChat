@@ -23,7 +23,7 @@ const SignUpPage = () => {
   setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/signup",
+        "https://quickchat-lxda.onrender.com/api/auth/signup",
         {
           name,
           email,

@@ -51,7 +51,7 @@ const handleSendMessage = async () => {
 
   try {
     await axios.post(
-      `http://localhost:4000/api/message/send/${selectedUser._id}`,
+      `https://quickchat-lxda.onrender.com/api/message/send/${selectedUser._id}`,
       {
         messages: messageText,
       },

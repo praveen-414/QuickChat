@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 
-const socket = io("http://localhost:4000", {
+const socket = io("https://quickchat-lxda.onrender.com", {
   withCredentials: true,
 });
 

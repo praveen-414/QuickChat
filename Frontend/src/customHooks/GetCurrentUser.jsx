@@ -10,7 +10,7 @@ const useCurrentUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/user/current", {
+        const res = await axios.get("https://quickchat-lxda.onrender.com/api/user/current", {
           withCredentials: true,
         });
         dispatch(setUsersData(res.data.user));
