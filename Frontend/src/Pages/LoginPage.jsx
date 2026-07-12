@@ -19,7 +19,7 @@ const LoginPage = () => {
     }
     try {
       const res = await axios.post(
-        "https://quickchat-lxda.onrender.com/api/auth/login",
+        "https://quickchat-iz3s.onrender.com/api/auth/login",
         {
           email,
           password,

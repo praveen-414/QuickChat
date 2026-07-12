@@ -37,7 +37,7 @@ const updateProfile = async () => {
     }
 
     const res = await axios.put(
-      "https://quickchat-lxda.onrender.com/api/user/profile",
+      "https://quickchat-iz3s.onrender.com/api/user/profile",
       formData,
       {
         withCredentials: true,
@@ -59,7 +59,7 @@ const updateProfile = async () => {
 };
   const handleLogout = async (req, res) => {
     try {
-      const res = await axios.get("https://quickchat-lxda.onrender.com/api/auth/logout", {
+      const res = await axios.get("https://quickchat-iz3s.onrender.com/api/auth/logout", {
         withCredentials: true,
       });
       dispatch(logOut());

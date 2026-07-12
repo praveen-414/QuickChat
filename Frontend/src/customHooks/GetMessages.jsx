@@ -18,7 +18,7 @@ const useGetMessages = () => {
       if (!selectedUser?._id) return;
       try {
         const res = await axios.get(
-          `https://quickchat-lxda.onrender.com/api/message/get/${selectedUser._id}`, 
+          `https://quickchat-iz3s.onrender.com/api/message/get/${selectedUser._id}`, 
           {
             withCredentials: true,
           },

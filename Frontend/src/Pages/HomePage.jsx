@@ -6,7 +6,7 @@ import MessageArea from "../components/MessageArea";
 const HomePage = () => {
  
   return (
-    <div className=" flex h-dvh overflow-hidden flex">
+    <div className=" flex h-dvh overflow-hidden">
       <SideBar />
       <MessageArea />
     </div>
