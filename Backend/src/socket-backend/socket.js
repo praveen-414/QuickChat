@@ -6,7 +6,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://quickchat-frontend-0z1n.onrender.com",
+    origin: "https://quickchat-qu6a.onrender.com",
     credentials: true,
     methods: ["GET", "POST"],
   },

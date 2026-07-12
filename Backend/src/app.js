@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://quickchat-frontend-0z1n.onrender.com",
+    origin: "https://quickchat-qu6a.onrender.com",
     credentials: true,
   }),
 );
