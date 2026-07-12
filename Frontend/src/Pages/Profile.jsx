@@ -37,7 +37,7 @@ const updateProfile = async () => {
     }
 
     const res = await axios.put(
-      "http://localhost:4000/api/user/profile",
+      "https://quickchat-lxda.onrender.com/api/user/profile",
       formData,
       {
         withCredentials: true,
