@@ -11,6 +11,7 @@ import { useRef } from "react";
 import socket from "../socket-frontend/socket";
 import { incrementUnread } from "../redux/usersSlice";
 import { setMessages, addMessage } from "../redux/messagesSlice";
+import ChatIllustration from "../assets/chat-illustration.svg";
 
 const MessageArea = () => {
   const [inputMessage, setInputMessage] = useState("");
@@ -197,70 +198,49 @@ const MessageArea = () => {
         </>
       ) : (
         <div className="flex flex-col items-center justify-center h-full text-center relative overflow-hidden px-6">
+          {/* Background Blur */}
+          <div className="absolute w-72 h-72 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-40"></div>
 
-  {/* Background Blur */}
-  <div className="absolute w-72 h-72 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-40"></div>
+          {/* Main Illustration */}
+          <div className="relative z-10">
+            <div className="relative">
+              {/* Circle */}
+              <div className="w-48 h-48 rounded-full bg-[#DBEAFE] dark:bg-[#1E293B] flex items-center justify-center shadow-xl">
+                <img src={ChatIllustration} alt="Chat" className="w-44" />
+              </div>
 
-  {/* Main Illustration */}
-  <div className="relative z-10">
+              {/* Floating Elements */}
+              <span className="absolute -top-4 -left-4 text-3xl">✨</span>
+              <span className="absolute top-4 -right-6 text-2xl">💙</span>
+              <span className="absolute bottom-4 -left-6 text-xl">💬</span>
+            </div>
 
-    <div className="relative">
+            <h1 className="mt-10 text-5xl font-bold text-[#1E293B] dark:text-white">
+              Welcome to <span className="text-[#2563EB]">QuickChat</span>
+            </h1>
 
-      {/* Circle */}
-      <div className="w-48 h-48 rounded-full bg-[#DBEAFE] dark:bg-[#1E293B] flex items-center justify-center shadow-xl">
+            <p className="mt-5 text-lg text-[#64748B] dark:text-[#94A3B8] max-w-lg leading-8">
+              Choose a conversation from the sidebar
+              <br />
+              to start chatting with your friends in real time.
+            </p>
 
-        <img
-          src="/chat-illustration.png"   // put your illustration here
-          alt="chat"
-          className="w-36"
-        />
+            {/* Paper Plane */}
+            <div className="mt-10 flex justify-center">
+              <svg width="130" height="40" viewBox="0 0 130 40" fill="none">
+                <path
+                  d="M5 20 C40 55 80 -15 120 20"
+                  stroke="#60A5FA"
+                  strokeWidth="2"
+                  strokeDasharray="6 6"
+                  fill="none"
+                />
+              </svg>
 
-      </div>
-
-      {/* Floating Elements */}
-      <span className="absolute -top-4 -left-4 text-3xl">✨</span>
-      <span className="absolute top-4 -right-6 text-2xl">💙</span>
-      <span className="absolute bottom-4 -left-6 text-xl">💬</span>
-
-    </div>
-
-    <h1 className="mt-10 text-5xl font-bold text-[#1E293B] dark:text-white">
-      Welcome to{" "}
-      <span className="text-[#2563EB]">
-        QuickChat
-      </span>
-    </h1>
-
-    <p className="mt-5 text-lg text-[#64748B] dark:text-[#94A3B8] max-w-lg leading-8">
-      Choose a conversation from the sidebar
-      <br />
-      to start chatting with your friends in real time.
-    </p>
-
-    {/* Paper Plane */}
-    <div className="mt-10 flex justify-center">
-      <svg
-        width="130"
-        height="40"
-        viewBox="0 0 130 40"
-        fill="none"
-      >
-        <path
-          d="M5 20 C40 55 80 -15 120 20"
-          stroke="#60A5FA"
-          strokeWidth="2"
-          strokeDasharray="6 6"
-          fill="none"
-        />
-      </svg>
-
-      <span className="-ml-2 text-3xl rotate-12">
-        ✈️
-      </span>
-    </div>
-
-  </div>
-</div>
+              <span className="-ml-2 text-3xl rotate-12">✈️</span>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
