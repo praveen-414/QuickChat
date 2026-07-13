@@ -15,9 +15,9 @@ const SideBar = () => {
 
   const [searchChats, setSearchChats] = useState("");
 
-  const filteredChats = otherUsersData.filter((otherUser) =>
-    otherUser.name.toLowerCase().includes(searchChats.toLowerCase()),
-  );
+  const filteredChats = otherUsersData?.filter((otherUser) =>
+  otherUser.name.toLowerCase().includes(searchChats.toLowerCase())
+) || [];
 
   const dispatch = useDispatch();
 
