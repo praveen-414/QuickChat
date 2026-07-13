@@ -18,6 +18,7 @@ const Profile = () => {
   const { theme } = useSelector((state) => state.theme);
   const [isReadOnly, setIsReadOnly] = useState(true);
   const [updateName, setUpdateName] = useState("");
+    const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,6 +28,7 @@ const Profile = () => {
     }
   }, [userData]);
 const updateProfile = async () => {
+  setLoading(true)
   try {
     const formData = new FormData();
 
@@ -55,6 +57,8 @@ const updateProfile = async () => {
   } catch (error) {
     console.log(error);
     toast.error("Profile update failed");
+  }finally{
+    setLoading(false)
   }
 };
   const handleLogout = async (req, res) => {
@@ -139,6 +143,7 @@ const updateProfile = async () => {
               </button>
             </form>
             <button
+               disabled={loading}
               onClick={updateProfile}
               className="
           w-full
@@ -155,7 +160,7 @@ const updateProfile = async () => {
                     cursor-pointer
                   "
             >
-              Save
+            {loading ? "Saving..." : "Save"}
             </button>
             <div
               onClick={() => dispatch(setTheme())}
