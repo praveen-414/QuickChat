@@ -32,51 +32,51 @@ const MessageArea = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-const handleSendMessage = async () => {
-  if (!inputMessage.trim()) return;
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim()) return;
 
-  const tempMessage = {
-    _id: Date.now().toString(),
-    sender: userData._id,
-    receiver: selectedUser._id,
-    messages: inputMessage,
-    createdAt: new Date().toISOString(),
-  };
+    const tempMessage = {
+      _id: Date.now().toString(),
+      sender: userData._id,
+      receiver: selectedUser._id,
+      messages: inputMessage,
+      createdAt: new Date().toISOString(),
+    };
 
-  // Show instantly
-  dispatch(addMessage(tempMessage));
+    // Show instantly
+    dispatch(addMessage(tempMessage));
 
-  const messageText = inputMessage;
-  setInputMessage("");
+    const messageText = inputMessage;
+    setInputMessage("");
 
-  try {
-    await axios.post(
-      `https://quickchat-iz3s.onrender.com/api/message/send/${selectedUser._id}`,
-      {
-        messages: messageText,
-      },
-      {
-        withCredentials: true,
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-useEffect(() => {
-  const handleNewMessage = (message) => {
-    if (selectedUser?._id === message.sender.toString()) {
-      dispatch(addMessage(message));
-    } else {
-      dispatch(incrementUnread(message.sender.toString()));
+    try {
+      await axios.post(
+        `https://quickchat-iz3s.onrender.com/api/message/send/${selectedUser._id}`,
+        {
+          messages: messageText,
+        },
+        {
+          withCredentials: true,
+        },
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  socket.on("newMessage", handleNewMessage);
+  useEffect(() => {
+    const handleNewMessage = (message) => {
+      if (selectedUser?._id === message.sender.toString()) {
+        dispatch(addMessage(message));
+      } else {
+        dispatch(incrementUnread(message.sender.toString()));
+      }
+    };
 
-  return () => socket.off("newMessage", handleNewMessage);
-}, [selectedUser, dispatch]);
+    socket.on("newMessage", handleNewMessage);
+
+    return () => socket.off("newMessage", handleNewMessage);
+  }, [selectedUser, dispatch]);
   return (
     <div
       className={`${
@@ -196,10 +196,19 @@ useEffect(() => {
           </div>
         </>
       ) : (
-        <div className="flex justify-center items-center h-full px-4 text-center">
-          <h1 className="text-2xl md:text-4xl font-bold text-[#2563EB]">
-            Select a user to start chatting!
+        <div className="flex flex-col items-center justify-center h-full text-center px-6">
+          <div className="w-28 h-28 rounded-full bg-[#DBEAFE] dark:bg-[#1E293B] flex items-center justify-center shadow-lg">
+            <span className="text-5xl">💬</span>
+          </div>
+
+          <h1 className="mt-6 text-3xl md:text-4xl font-bold text-[#1E293B] dark:text-white">
+            Welcome to QuickChat
           </h1>
+
+          <p className="mt-3 text-[#64748B] dark:text-[#94A3B8] max-w-md text-base">
+            Choose a conversation from the sidebar to start chatting with your
+            friends in real time.
+          </p>
         </div>
       )}
     </div>
