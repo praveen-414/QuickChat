@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogin = async (e) => {
@@ -17,6 +18,7 @@ const LoginPage = () => {
     if (!email || !password) {
       return alert("All fields are required...!");
     }
+    setLoading(true);
     try {
       const res = await axios.post(
         "https://quickchat-iz3s.onrender.com/api/auth/login",
@@ -36,6 +38,8 @@ const LoginPage = () => {
       setPassword("");
     } catch (error) {
       console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -96,6 +100,7 @@ const LoginPage = () => {
             </p>
 
             <button
+            disabled={loading}
               className="
                     mt-3
                     bg-[#2563EB]
@@ -110,7 +115,7 @@ const LoginPage = () => {
                     cursor-pointer
                   "
             >
-              Login
+              {loading ? "Logging..." : "Login"}
             </button>
           </form>
         </div>

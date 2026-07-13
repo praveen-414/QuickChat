@@ -16,11 +16,11 @@ const SignUpPage = () => {
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
-      e.preventDefault();
+    e.preventDefault();
     if (password !== confirmPassword) {
       return toast.error("passwords doesn't match...!");
     }
-  setLoading(true);
+    setLoading(true);
     try {
       const res = await axios.post(
         "https://quickchat-iz3s.onrender.com/api/auth/signup",
@@ -47,7 +47,7 @@ const SignUpPage = () => {
       console.log(error.message);
       console.log(error.code);
       console.log(error.response);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -84,7 +84,7 @@ const SignUpPage = () => {
 
           <form className="flex flex-col gap-4" onSubmit={handleSignUp}>
             <input
-            required
+              required
               value={name}
               onChange={(e) => setName(e.target.value)}
               type="text"
@@ -93,7 +93,7 @@ const SignUpPage = () => {
             />
 
             <input
-            required
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
@@ -102,7 +102,7 @@ const SignUpPage = () => {
             />
 
             <input
-            required
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
@@ -111,7 +111,7 @@ const SignUpPage = () => {
             />
 
             <input
-            required
+              required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               type="password"
@@ -129,7 +129,7 @@ const SignUpPage = () => {
             </p>
 
             <button
-             disabled={loading}
+              disabled={loading}
               type="submit"
               className="
                 mt-3
@@ -145,7 +145,7 @@ const SignUpPage = () => {
                 cursor-pointer
               "
             >
-             {loading ? "Signing Up..." : "Sign Up"}
+              {loading ? "Signing Up..." : "Sign Up"}
             </button>
           </form>
         </div>
