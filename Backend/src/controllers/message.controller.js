@@ -4,19 +4,24 @@ import { getReceiverId } from "../socket-backend/socket.js";
 import { io } from "../socket-backend/socket.js";
 
 const sendMessage = async (req, res) => {
-   console.time("sendMessage");
+  console.time("sendMessage");
   try {
     const sender = req.userId;
     const receiver = req.params.id;
     const messages = req.body.messages;
+    console.time("findConversation");
     let conversation = await conversationModel.findOne({
       participants: { $all: [sender, receiver] },
     });
+    console.timeEnd("findConversation");
+    console.time("createMessage");
     const newMessage = await messageModel.create({
       sender,
       receiver,
       messages,
     });
+    console.timeEnd("createMessage");
+    console.time("saveConversation");
     if (!conversation) {
       conversation = await conversationModel.create({
         participants: [sender, receiver],
@@ -26,14 +31,14 @@ const sendMessage = async (req, res) => {
       conversation.messages.push(newMessage._id);
       await conversation.save();
     }
-
+    console.timeEnd("saveConversation");
     const receiverSocketId = getReceiverId(receiver);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
 
     res.status(201).json(newMessage);
-      console.timeEnd("sendMessage");
+    console.timeEnd("sendMessage");
   } catch (error) {
     console.log(error);
   }
