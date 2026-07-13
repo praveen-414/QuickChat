@@ -18,7 +18,7 @@ const Profile = () => {
   const { theme } = useSelector((state) => state.theme);
   const [isReadOnly, setIsReadOnly] = useState(true);
   const [updateName, setUpdateName] = useState("");
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,45 +27,48 @@ const Profile = () => {
       setUpdateName(userData.name);
     }
   }, [userData]);
-const updateProfile = async () => {
-  setLoading(true)
-  try {
-    const formData = new FormData();
+  const updateProfile = async () => {
+    setLoading(true);
+    try {
+      const formData = new FormData();
 
-    formData.append("name", updateName);
+      formData.append("name", updateName);
 
-    if (profile) {
-      formData.append("profile", profile);
-    }
-
-    const res = await axios.put(
-      "https://quickchat-iz3s.onrender.com/api/user/profile",
-      formData,
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      if (profile) {
+        formData.append("profile", profile);
       }
-    );
 
-    dispatch(setUsersData(res.data.user));
+      const res = await axios.put(
+        "https://quickchat-iz3s.onrender.com/api/user/profile",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
 
-    toast.success(res.data.message);
+      dispatch(setUsersData(res.data.user));
 
-    navigate("/");
-  } catch (error) {
-    console.log(error);
-    toast.error("Profile update failed");
-  }finally{
-    setLoading(false)
-  }
-};
+      toast.success(res.data.message);
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      toast.error("Profile update failed");
+    } finally {
+      setLoading(false);
+    }
+  };
   const handleLogout = async (req, res) => {
     try {
-      const res = await axios.get("https://quickchat-iz3s.onrender.com/api/auth/logout", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "https://quickchat-iz3s.onrender.com/api/auth/logout",
+        {
+          withCredentials: true,
+        },
+      );
       dispatch(logOut());
       navigate("/login");
     } catch (error) {
@@ -143,7 +146,7 @@ const updateProfile = async () => {
               </button>
             </form>
             <button
-               disabled={loading}
+              disabled={loading}
               onClick={updateProfile}
               className="
           w-full
@@ -160,7 +163,7 @@ const updateProfile = async () => {
                     cursor-pointer
                   "
             >
-            {loading ? "Saving..." : "Save"}
+              {loading ? "Saving..." : "Save"}
             </button>
             <div
               onClick={() => dispatch(setTheme())}
@@ -169,9 +172,9 @@ const updateProfile = async () => {
               <h1>{theme === "Light" ? "Dark Mode" : "Light Mode"}</h1>
               <span>
                 {theme === "Light" ? (
-                  <MdOutlineDarkMode size={20}  color="#7C3AED"/>
+                  <MdOutlineDarkMode size={20} color="#7C3AED" />
                 ) : (
-                  <MdOutlineLightMode size={20} color="#FACC15"  />
+                  <MdOutlineLightMode size={20} color="#FACC15" />
                 )}
               </span>
             </div>
@@ -185,9 +188,21 @@ const updateProfile = async () => {
         </div>
         {/* right  */}
 
-        <div className="hidden dark:bg-[#0F172A]  md:flex lg:flex flex-1 justify-center items-center h-full text-[#2563EB]">
-          {" "}
-          <h1 className="text-4xl font-bold">Update your Profile!</h1>
+        <div className="hidden md:flex flex-1 dark:bg-[#0F172A] items-center justify-center px-8">
+          <div className="text-center max-w-lg">
+            <div className="w-36 h-36 mx-auto rounded-full bg-[#DBEAFE] dark:bg-[#1E293B] flex items-center justify-center shadow-lg">
+              <span className="text-6xl">👤</span>
+            </div>
+
+            <h1 className="mt-8 text-5xl font-bold text-[#1E293B] dark:text-white">
+              Your Profile
+            </h1>
+
+            <p className="mt-4 text-lg text-[#64748B] dark:text-[#94A3B8] leading-8">
+              Update your name or profile picture to personalize your QuickChat
+              account.
+            </p>
+          </div>
         </div>
       </div>
     </>

@@ -11,7 +11,6 @@ import { useRef } from "react";
 import socket from "../socket-frontend/socket";
 import { incrementUnread } from "../redux/usersSlice";
 import { setMessages, addMessage } from "../redux/messagesSlice";
-import ChatIllustration from "../assets/chat-illustration.svg";
 
 const MessageArea = () => {
   const [inputMessage, setInputMessage] = useState("");
@@ -203,18 +202,6 @@ const MessageArea = () => {
 
           {/* Main Illustration */}
           <div className="relative z-10">
-            <div className="relative">
-              {/* Circle */}
-              <div className="w-48 h-48 rounded-full bg-[#DBEAFE] dark:bg-[#1E293B] flex items-center justify-center shadow-xl">
-                <img src={ChatIllustration} alt="Chat" className="w-44" />
-              </div>
-
-              {/* Floating Elements */}
-              <span className="absolute -top-4 -left-4 text-3xl">✨</span>
-              <span className="absolute top-4 -right-6 text-2xl">💙</span>
-              <span className="absolute bottom-4 -left-6 text-xl">💬</span>
-            </div>
-
             <h1 className="mt-10 text-5xl font-bold text-[#1E293B] dark:text-white">
               Welcome to <span className="text-[#2563EB]">QuickChat</span>
             </h1>
