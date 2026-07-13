@@ -4,43 +4,45 @@ import { getReceiverId } from "../socket-backend/socket.js";
 import { io } from "../socket-backend/socket.js";
 
 const sendMessage = async (req, res) => {
-  console.time("sendMessage");
   try {
     const sender = req.userId;
     const receiver = req.params.id;
-    const messages = req.body.messages;
-    console.time("findConversation");
-    let conversation = await conversationModel.findOne({
-      participants: { $all: [sender, receiver] },
-    });
-    console.timeEnd("findConversation");
-    console.time("createMessage");
+    const { messages } = req.body;
+
     const newMessage = await messageModel.create({
       sender,
       receiver,
       messages,
     });
-    console.timeEnd("createMessage");
-    console.time("saveConversation");
-    if (!conversation) {
-      conversation = await conversationModel.create({
-        participants: [sender, receiver],
-        messages: [newMessage._id],
-      });
-    } else {
-      conversation.messages.push(newMessage._id);
-      await conversation.save();
-    }
-    console.timeEnd("saveConversation");
+
+    await conversationModel.findOneAndUpdate(
+      {
+        participants: { $all: [sender, receiver] },
+      },
+      {
+        $setOnInsert: {
+          participants: [sender, receiver],
+        },
+        $push: {
+          messages: newMessage._id,
+        },
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    );
+
     const receiverSocketId = getReceiverId(receiver);
+
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
 
-    res.status(201).json(newMessage);
-    console.timeEnd("sendMessage");
+    return res.status(201).json(newMessage);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
